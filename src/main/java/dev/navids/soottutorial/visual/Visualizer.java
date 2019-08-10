@@ -5,15 +5,16 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.layout.Layout;
-import org.graphstream.ui.layout.springbox.BarnesHutLayout;
 import org.graphstream.ui.layout.springbox.implementations.LinLog;
 import org.graphstream.ui.spriteManager.SpriteManager;
-import org.graphstream.ui.swingViewer.ViewPanel;
-import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import soot.SootMethod;
 import soot.Unit;
+import soot.Value;
+import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JIfStmt;
+import soot.jimple.internal.JInvokeStmt;
+import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.graph.UnitGraph;
@@ -66,8 +67,6 @@ public class Visualizer {
                 "}\n";
 
         graph.setAttribute("ui.stylesheet", GCSS);
-//        graph.setAutoCreate(true);
-//        graph.setStrict(false);
     }
 
     public void addUnitGraph(UnitGraph unitGraph){
@@ -75,7 +74,40 @@ public class Visualizer {
             Unit unit = it.next();
             String aid = getID(unit);
             Node aNode = graph.addNode(getID(unit));
-            aNode.setAttribute("ui.label", unit.toString());
+            String label = unit.toString();
+            if (unit instanceof JAssignStmt){
+                JAssignStmt jAssignStmt = (JAssignStmt) unit;
+                if(jAssignStmt.containsInvokeExpr() && jAssignStmt.getInvokeExpr() instanceof JVirtualInvokeExpr){
+                    label = jAssignStmt.getLeftOp().toString() + "=";
+                    JVirtualInvokeExpr jVirtualInvokeExpr = (JVirtualInvokeExpr) jAssignStmt.getInvokeExpr();
+                    label += jVirtualInvokeExpr.getBase() + "."+jVirtualInvokeExpr.getMethod().getName();
+                    if(jVirtualInvokeExpr.getArgCount() > 0){
+                        label += "(";
+                        for(Value v : jVirtualInvokeExpr.getArgs()){
+                            label +=v.toString() + ",";
+                        }
+                        label = label.substring(0, label.length()-1);
+                        label += ")";
+                    }
+                }
+            }
+            if (unit instanceof JInvokeStmt){
+                JInvokeStmt jInvokeStmt = (JInvokeStmt) unit;
+                if(jInvokeStmt.containsInvokeExpr() && jInvokeStmt.getInvokeExpr() instanceof JVirtualInvokeExpr){
+                    JVirtualInvokeExpr jVirtualInvokeExpr = (JVirtualInvokeExpr) jInvokeStmt.getInvokeExpr();
+                    label = jVirtualInvokeExpr.getBase() + "."+jVirtualInvokeExpr.getMethod().getName();
+                    if(jVirtualInvokeExpr.getArgCount() > 0){
+                        label += "(";
+                        for(Value v : jVirtualInvokeExpr.getArgs()){
+                            label +=v.toString() + ",";
+                        }
+                        label = label.substring(0, label.length()-1);
+                        label += ")";
+                    }
+                }
+            }
+            label = label.replace("java.lang.", "").replace("java.io.","");
+            aNode.setAttribute("ui.label", label);
             if(unit instanceof JIfStmt)
                 aNode.addAttribute("ui.class", "branch");
         }
@@ -185,6 +217,7 @@ public class Visualizer {
 //        View view = viewer.getDefaultView();
         Layout layout = new LinLog();
         viewer.enableAutoLayout(layout);
+//        layout.setStabilizationLimit(10);
     }
 
     public void close(){

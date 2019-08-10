@@ -5,59 +5,48 @@ package dev.navids.soottutorial;
 
 import dev.navids.soottutorial.visual.Visualizer;
 import soot.*;
-import soot.jimple.toolkits.callgraph.Edge;
+import soot.jimple.JimpleBody;
 import soot.options.Options;
 import soot.toolkits.graph.ClassicCompleteUnitGraph;
 import soot.toolkits.graph.UnitGraph;
-
-import javax.swing.text.html.Option;
-import java.util.Collections;
-import java.util.Iterator;
 
 public class App {
 
     public static void setupSoot(){
         G.reset();
-        String sourcePath = System.getProperty("user.dir") + "/demo/one";
-        String mainClassPath = sourcePath + "/A.java";
-        Options.v().set_process_dir(Collections.singletonList(sourcePath));
         Options.v().set_allow_phantom_refs(true);
-        Options.v().set_whole_program(true);
+        String sourcePath = System.getProperty("user.dir") + "/demo/one/";
         Options.v().set_soot_classpath(sourcePath);
-//        Options.v().set_src_prec(Options.src_prec_J);
-        Options.v().set_output_format(Options.output_format_jimple);
-//        Options.v().set_output_format(Options.output_format_jimple);
-
-//        Options.v().set_soot_classpath(sourcePath);
-
-
+        SootClass sc = Scene.v().loadClassAndSupport("A");
+        sc.setApplicationClass();
         Scene.v().loadNecessaryClasses();
-
-        PackManager.v().runPacks();
 
     }
 
     public static void main(String[] args) {
         setupSoot();
-        SootClass mainClass = Scene.v().getMainClass();
-        SootMethod sm = mainClass.getMethodByName("multiply");
+        SootClass mainClass = Scene.v().getSootClass("A");
+        SootMethod sm = mainClass.getMethodByName("printFizzBuzz");
+        JimpleBody body = (JimpleBody) sm.retrieveActiveBody();
+        System.out.println("Method Signature: " + sm.getSignature() );
+        System.out.println("--------------");
+        System.out.println("Argument(s):");
+        for(Local l : body.getParameterLocals()){
+            System.out.println(l.getName() + " : " + l.getType());
+        }
+        System.out.println("--------------");
+        System.out.println("This: " + body.getThisLocal());
+        System.out.println("--------------");
+        System.out.println("Units:");
+        int c = 1;
+        for(Unit u : body.getUnits()){
+            System.out.println("("+c+") " +u.toString());
+            c++;
+        }
+        System.out.println("--------------");
         UnitGraph ug = new ClassicCompleteUnitGraph(sm.getActiveBody());
-
         Visualizer.v().addUnitGraph(ug);
-
-//        sm = mainClass.getMethodByName("getSumOneToN");
-//        ug = new ClassicCompleteUnitGraph(sm.getActiveBody());
-//        Visualizer.v().addUnitGraph(ug);
-//
-        Visualizer.v().addCallGraph(Scene.v().getCallGraph());
-
         Visualizer.v().draw();
         System.out.print("s");
-//        try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        Visualizer.v().close();
     }
 }
