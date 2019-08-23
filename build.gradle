@@ -41,4 +41,4 @@ dependencies {
 }
 
 // Define the main class for the application
-mainClassName = 'dev.navids.soottutorial.App'
+mainClassName = 'dev.navids.soottutorial.HelloSoot'

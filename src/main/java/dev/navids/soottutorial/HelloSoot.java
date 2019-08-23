@@ -6,17 +6,19 @@ package dev.navids.soottutorial;
 import dev.navids.soottutorial.visual.Visualizer;
 import soot.*;
 import soot.jimple.JimpleBody;
+import soot.jimple.internal.JIfStmt;
 import soot.options.Options;
 import soot.toolkits.graph.ClassicCompleteUnitGraph;
 import soot.toolkits.graph.UnitGraph;
 
-public class App {
+public class HelloSoot {
+
+    public static String sourceDirectory = System.getProperty("user.dir") + "/demo/HelloSoot/";
 
     public static void setupSoot(){
         G.reset();
         Options.v().set_allow_phantom_refs(true);
-        String sourcePath = System.getProperty("user.dir") + "/demo/one/";
-        Options.v().set_soot_classpath(sourcePath);
+        Options.v().set_soot_classpath(sourceDirectory);
         SootClass sc = Scene.v().loadClassAndSupport("A");
         sc.setApplicationClass();
         Scene.v().loadNecessaryClasses();
@@ -24,6 +26,9 @@ public class App {
     }
 
     public static void main(String[] args) {
+        boolean drawGraph = false;
+        if(args.length > 0 && args[0].equals("draw"))
+            drawGraph = true;
         setupSoot();
         SootClass mainClass = Scene.v().getSootClass("A");
         SootMethod sm = mainClass.getMethodByName("printFizzBuzz");
@@ -44,9 +49,15 @@ public class App {
             c++;
         }
         System.out.println("--------------");
-        UnitGraph ug = new ClassicCompleteUnitGraph(sm.getActiveBody());
-        Visualizer.v().addUnitGraph(ug);
-        Visualizer.v().draw();
-        System.out.print("s");
+        System.out.println("Branch Statements:");
+        for(Unit u : body.getUnits()){
+            if (u instanceof JIfStmt)
+                System.out.println(u.toString());
+        }
+        if(drawGraph) {
+            UnitGraph ug = new ClassicCompleteUnitGraph(sm.getActiveBody());
+            Visualizer.v().addUnitGraph(ug);
+            Visualizer.v().draw();
+        }
     }
 }
