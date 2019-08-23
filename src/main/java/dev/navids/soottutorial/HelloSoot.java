@@ -27,13 +27,14 @@ public class HelloSoot {
     }
 
     public static void main(String[] args) {
-        boolean drawGraph = false;
-        if(args.length > 0 && args[0].equals("draw"))
-            drawGraph = true;
         setupSoot();
+
+        // Retrieve printFizzBuzz's body
         SootClass mainClass = Scene.v().getSootClass(clsName);
         SootMethod sm = mainClass.getMethodByName(methodName);
         JimpleBody body = (JimpleBody) sm.retrieveActiveBody();
+
+        // Print some information about printFizzBuzz
         System.out.println("Method Signature: " + sm.getSignature() );
         System.out.println("--------------");
         System.out.println("Argument(s):");
@@ -50,11 +51,18 @@ public class HelloSoot {
             c++;
         }
         System.out.println("--------------");
+
+        // Print statements that have branch conditions
         System.out.println("Branch Statements:");
         for(Unit u : body.getUnits()){
             if (u instanceof JIfStmt)
                 System.out.println(u.toString());
         }
+
+        // Draw the control-flow graph of the method if 'draw' is provided in arguments
+        boolean drawGraph = false;
+        if(args.length > 0 && args[0].equals("draw"))
+            drawGraph = true;
         if(drawGraph) {
             UnitGraph ug = new ClassicCompleteUnitGraph(sm.getActiveBody());
             Visualizer.v().addUnitGraph(ug);
