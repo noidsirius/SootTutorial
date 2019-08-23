@@ -39,6 +39,20 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+}
+
+task buildDemoClass(type: Exec) {
+    workingDir '.'
+    commandLine './buildDemo.sh'
+}
+
+build.dependsOn buildDemoClass
+assemble.dependsOn buildDemoClass
 
 // Define the main class for the application
 mainClassName = 'dev.navids.soottutorial.HelloSoot'
