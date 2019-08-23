@@ -14,12 +14,13 @@ import soot.toolkits.graph.UnitGraph;
 public class HelloSoot {
 
     public static String sourceDirectory = System.getProperty("user.dir") + "/demo/HelloSoot/";
-
+    public static String clsName = "FizzBuzz";
+    public static String methodName = "printFizzBuzz";
     public static void setupSoot(){
         G.reset();
         Options.v().set_allow_phantom_refs(true);
         Options.v().set_soot_classpath(sourceDirectory);
-        SootClass sc = Scene.v().loadClassAndSupport("A");
+        SootClass sc = Scene.v().loadClassAndSupport(clsName);
         sc.setApplicationClass();
         Scene.v().loadNecessaryClasses();
 
@@ -30,8 +31,8 @@ public class HelloSoot {
         if(args.length > 0 && args[0].equals("draw"))
             drawGraph = true;
         setupSoot();
-        SootClass mainClass = Scene.v().getSootClass("A");
-        SootMethod sm = mainClass.getMethodByName("printFizzBuzz");
+        SootClass mainClass = Scene.v().getSootClass(clsName);
+        SootMethod sm = mainClass.getMethodByName(methodName);
         JimpleBody body = (JimpleBody) sm.retrieveActiveBody();
         System.out.println("Method Signature: " + sm.getSignature() );
         System.out.println("--------------");

@@ -53,6 +53,7 @@ task buildDemoClass(type: Exec) {
 
 build.dependsOn buildDemoClass
 assemble.dependsOn buildDemoClass
+test.dependsOn buildDemoClass
 
 // Define the main class for the application
 mainClassName = 'dev.navids.soottutorial.HelloSoot'

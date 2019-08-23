@@ -1,4 +1,4 @@
-public class A {
+public class FizzBuzz {
 
     public void printFizzBuzz(int k){
         if (k%15==0)

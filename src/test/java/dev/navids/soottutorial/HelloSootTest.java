@@ -16,17 +16,17 @@ import static org.junit.Assert.*;
 
 public class HelloSootTest {
     @Test public void testClassFilesExist() {
-        File aClassFile = new File(HelloSoot.sourceDirectory+File.separator+"A.class");
+        File aClassFile = new File(HelloSoot.sourceDirectory+File.separator+ HelloSoot.clsName+".class");
         assertTrue(aClassFile.exists());
-        File aJavaFile = new File(HelloSoot.sourceDirectory+File.separator+"A.java");
+        File aJavaFile = new File(HelloSoot.sourceDirectory+File.separator+HelloSoot.clsName+".java");
         assertTrue(aJavaFile.exists());
     }
 
     @Test public void testMethodsExist() {
         HelloSoot.setupSoot();
-        SootClass aClass = Scene.v().getSootClass("A");
+        SootClass aClass = Scene.v().getSootClass(HelloSoot.clsName);
         assertFalse(aClass.isPhantom());
-        SootMethod printFizzBuzzMethod = aClass.getMethodByName("printFizzBuzz");
+        SootMethod printFizzBuzzMethod = aClass.getMethodByName(HelloSoot.methodName);
         assertFalse(printFizzBuzzMethod.isPhantom());
         Body body = printFizzBuzzMethod.retrieveActiveBody();
         assertTrue(body instanceof JimpleBody);
