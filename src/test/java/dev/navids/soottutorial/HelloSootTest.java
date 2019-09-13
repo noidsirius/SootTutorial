@@ -3,6 +3,7 @@
  */
 package dev.navids.soottutorial;
 
+import dev.navids.soottutorial.hellosoot.HelloSoot;
 import org.junit.Test;
 import soot.Body;
 import soot.Scene;
