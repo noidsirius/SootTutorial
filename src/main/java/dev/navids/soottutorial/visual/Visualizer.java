@@ -107,6 +107,7 @@ public class Visualizer {
                 }
             }
             label = label.replace("java.lang.", "").replace("java.io.","");
+            // TODO: simplify it to line number
             aNode.setAttribute("ui.label", label);
             if(unit instanceof JIfStmt)
                 aNode.addAttribute("ui.class", "branch");

@@ -1,17 +1,18 @@
 package dev.navids.soottutorial.androidinstrumenter;
 
 import org.xmlpull.v1.XmlPullParserException;
-        import soot.*;
-        import soot.jimple.IntConstant;
-        import soot.jimple.Jimple;
-        import soot.jimple.JimpleBody;
-        import soot.jimple.StringConstant;
-//        import soot.jimple.infoflow.android.manifest.ProcessManifest;
-        import soot.jimple.internal.JIdentityStmt;
-        import soot.options.Options;
-        import soot.util.Chain;
+import soot.*;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.StringConstant;
+import soot.jimple.internal.JIdentityStmt;
+import soot.jimple.infoflow.android.manifest.ProcessManifest;
+import soot.options.Options;
+import soot.util.Chain;
 
-        import java.util.Arrays;
+import java.io.IOException;
+import java.util.Arrays;
         import java.util.Collections;
         import java.util.Map;
 
@@ -35,7 +36,6 @@ public class AndroidInstrumenter {
         Options.v().set_include_all(true);
         Options.v().set_process_multiple_dex(true);
         Options.v().set_output_dir(outputPath);
-        Options.v().set_android_api_version(27);
         Scene.v().addBasicClass("java.io.PrintStream",SootClass.SIGNATURES);
         Scene.v().addBasicClass("java.lang.System",SootClass.SIGNATURES);
         Scene.v().loadNecessaryClasses();
@@ -126,15 +126,14 @@ public class AndroidInstrumenter {
 
     private static String getPackageName() {
         String packageName = "";
-        // TODO: uncomment
-//        try {
-//            ProcessManifest manifest = new ProcessManifest(apkPath);
-//            packageName = manifest.getPackageName();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (XmlPullParserException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            ProcessManifest manifest = new ProcessManifest(apkPath);
+            packageName = manifest.getPackageName();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
         return packageName;
     }
 

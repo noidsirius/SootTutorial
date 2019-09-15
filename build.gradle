@@ -19,10 +19,21 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
     mavenCentral()
+    maven {
+        url 'https://soot-build.cs.uni-paderborn.de/nexus/repository/soot-snapshot/'
+    }
+    maven {
+        url 'https://soot-build.cs.uni-paderborn.de/nexus/repository/soot-release/'
+    }
 }
 
 dependencies {
 
+
+    implementation 'de.tud.sse:soot-infoflow:2.7.1'
+    implementation 'de.tud.sse:soot-infoflow-android:2.7.1'
+    implementation 'de.tud.sse:soot-infoflow-cmd:2.7.1'
+    implementation 'de.tud.sse:soot-infoflow-summaries:2.7.1'
     implementation ([group: 'ca.mcgill.sable', name: 'soot', version: '3.3.0'])
     implementation ('org.slf4j:slf4j-nop:1.7.5')
     implementation 'org.graphstream:gs-core:1.3'
@@ -56,4 +67,4 @@ assemble.dependsOn buildDemoClass
 test.dependsOn buildDemoClass
 
 // Define the main class for the application
-mainClassName = 'dev.navids.soottutorial.HelloSoot'
+mainClassName = 'dev.navids.soottutorial.hellosoot.HelloSoot'
