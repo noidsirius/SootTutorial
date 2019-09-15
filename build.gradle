@@ -67,4 +67,4 @@ assemble.dependsOn buildDemoClass
 test.dependsOn buildDemoClass
 
 // Define the main class for the application
-mainClassName = 'dev.navids.soottutorial.hellosoot.HelloSoot'
+mainClassName = 'dev.navids.soottutorial.Main'

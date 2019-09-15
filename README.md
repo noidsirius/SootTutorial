@@ -18,6 +18,11 @@ If you have some knowledge about static program analysis I suggest you learn Soo
 
 In this chapter, you will visit a very simple code example to be familiar with Soot essential data structures and **Jimple**, Soot's principle intermediate representation.
 
+* `./gradlew run --args="HelloSoot"`: The Jimple representation of the [printFizzBuzz](https://github.com/noidsirius/SootTutorial/tree/master/demo/HelloSoot/FizzBuzz.java) method alongside the branch statement.
+* `./gradlew run --args="HelloSoot draw"`: The visualization of the [printFizzBuzz](https://github.com/noidsirius/SootTutorial/tree/master/demo/HelloSoot/FizzBuzz.java) control-flow graph.
+
+
+
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|
 |Hello Soot |[Doc](https://github.com/noidsirius/SootTutorial/blob/master/docs/1/)      | [HelloSoot.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/hellosoot/HelloSoot.java) | [FizzBuzz.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/HelloSoot/FizzBuzz.java) |
@@ -33,12 +38,3 @@ In this chapter, you will visit a very simple code example to be familiar with S
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|
 |Trace an APK| | [AndroidTracer.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/android/AndroidTracer.java) | |
-
-
-
-  
-## Run the analyzer
-### HelloSoot
-
-* `./gradlew run` will analyze `printFizzBuzz` method of `FizzBuzz` class located in `demo/HelloSoot/FizzBuzz.class`.
-  * In order to see a visualization of `printFizzBuzz` control-flog graph execute `./gradlew run --args='draw'`

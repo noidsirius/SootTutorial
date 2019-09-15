@@ -60,7 +60,7 @@ public class HelloSoot {
         }
 
         // Draw the control-flow graph of the method if 'draw' is provided in arguments
-        boolean drawGraph = true;
+        boolean drawGraph = false;
         if(args.length > 0 && args[0].equals("draw"))
             drawGraph = true;
         if(drawGraph) {
