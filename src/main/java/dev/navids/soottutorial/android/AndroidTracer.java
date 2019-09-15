@@ -1,4 +1,4 @@
-package dev.navids.soottutorial.androidinstrumenter;
+package dev.navids.soottutorial.android;
 
 import org.xmlpull.v1.XmlPullParserException;
 import soot.*;
@@ -16,7 +16,7 @@ import java.util.Arrays;
         import java.util.Collections;
         import java.util.Map;
 
-public class AndroidInstrumenter {
+public class AndroidTracer {
 
     static String androidJar = "path/to/android/jar";
     static String apkPath = "path/to/apk";

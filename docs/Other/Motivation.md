@@ -1,0 +1,8 @@
+# Why another tutorial for Soot? 
+## or how did I motivate myself to write this tutorial
+
+A while ago, I wanted to analyze an Android app and instrument it for one of my course projects. I was told [**Soot**](https://github.com/Sable/soot) is one of the greatest frameworks for analyzing Java and Android programs both for researchers and practitioners. So I decided to learn Soot as fast as I can. There were several resources for learning Soot. Especially the [Soot's wiki page](https://github.com/Sable/soot/wiki/Tutorials) listed some useful and easy tutorials. 
+
+According to [A Survivor's Guide to Java Program Analysis with Soot](https://www.brics.dk/SootGuide/)'s authors, "Soot is a large framework which can be quite challenging to navigate without getting quickly lost" which suggests Soot has a steep learning curve. They were right; I got lost so quickly. Most of Soot's guidelines assume the readers are familiar with theoretical parts of static programming analysis such as lattices or flow functions which I didn't have any prior knowledge about. Moreover, these guidelines try to explain everything in Soot that most of Soot users won't need at all in my opinion. 
+
+One way or another I learned Soot, at least some basic parts of it, but I realized those tutorials are not suitable for people with no background in static analysis. As a result, I decided to write this tutorial to introduce Soot and static analysis using very simple (but working) examples. I heavily used Soot wiki and A Survivor's Guide to Java Program Analysis with Soot to write this post.

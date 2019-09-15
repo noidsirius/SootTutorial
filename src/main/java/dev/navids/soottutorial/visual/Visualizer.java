@@ -70,7 +70,9 @@ public class Visualizer {
     }
 
     public void addUnitGraph(UnitGraph unitGraph){
+        int index = 0;
         for(Iterator<Unit> it = unitGraph.iterator(); it.hasNext();){
+            index += 1;
             Unit unit = it.next();
             String aid = getID(unit);
             Node aNode = graph.addNode(getID(unit));
@@ -108,6 +110,7 @@ public class Visualizer {
             }
             label = label.replace("java.lang.", "").replace("java.io.","");
             // TODO: simplify it to line number
+            label = String.valueOf(index);
             aNode.setAttribute("ui.label", label);
             if(unit instanceof JIfStmt)
                 aNode.addAttribute("ui.class", "branch");
