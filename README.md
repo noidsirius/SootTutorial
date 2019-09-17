@@ -30,6 +30,15 @@ In this chapter, you will visit a very simple code example to be familiar with S
 <img src="https://github.com/noidsirius/SootTutorial/blob/master/docs/1/images/cfg.png" alt="Control Flow Graph" width="400"/>
 
 ### 2: Some *Real* Static Analysis (:construction: WIP)
+
+* `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream"`: Find usages of the method with the given subsignature in all methods of [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/UsageExample.java).
+* `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream"`: Find usages of the method with the given subsignature of the given class signature in all methods of [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/UsageExample.java).
+
+
+|Title |Tutorial | Soot Code        | Example Input  |
+| :---: |:-------------: |:-------------:| :-----:|
+|Find usages of a method| | [UsageFinder.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intraanalysis/UsageFinder.java) | [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/UsageExample.java) |
+
 ### 3: Manipulate the code (:construction: WIP)
 ### 4: Call Graphs (:construction: WIP)
 ### 5: Interprocedural analysis (:construction: WIP)
