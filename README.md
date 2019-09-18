@@ -37,8 +37,8 @@ In this chapter, you will visit a very simple code example to be familiar with S
 
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|
-|Find usages of a method| | [UsageFinder.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intraanalysis/usagefinder/UsageFinder.java) | [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/usagefinder/UsageExample.java) |
-|Null Pointer Analysis ||[NullPointerAnalysis](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intraanalysis/npanalysis/) | [NullPointerExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/NullPointerExample.java) |
+|Find usages of a method| | [UsageFinder.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intra/usagefinder/UsageFinder.java) | [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/usagefinder/UsageExample.java) |
+|Null Pointer Analysis ||[NullPointerAnalysis](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intra/npanalysis/) | [NullPointerExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/NullPointerExample.java) |
 
 
 ### 3: Manipulate the code (:construction: WIP)

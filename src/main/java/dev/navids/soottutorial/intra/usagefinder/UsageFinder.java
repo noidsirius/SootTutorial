@@ -1,4 +1,4 @@
-package dev.navids.soottutorial.intraanalysis.usagefinder;
+package dev.navids.soottutorial.intra.usagefinder;
 
 import soot.*;
 import soot.jimple.AbstractStmtSwitch;

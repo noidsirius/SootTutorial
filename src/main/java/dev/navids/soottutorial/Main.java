@@ -1,8 +1,8 @@
 package dev.navids.soottutorial;
 
 import dev.navids.soottutorial.hellosoot.HelloSoot;
-import dev.navids.soottutorial.intraanalysis.npanalysis.NPAMain;
-import dev.navids.soottutorial.intraanalysis.usagefinder.UsageFinder;
+import dev.navids.soottutorial.intra.npanalysis.NPAMain;
+import dev.navids.soottutorial.intra.usagefinder.UsageFinder;
 
 import java.util.Arrays;
 

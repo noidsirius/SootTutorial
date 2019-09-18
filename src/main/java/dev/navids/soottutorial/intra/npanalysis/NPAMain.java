@@ -1,4 +1,4 @@
-package dev.navids.soottutorial.intraanalysis.npanalysis;
+package dev.navids.soottutorial.intra.npanalysis;
 
 import soot.*;
 import soot.jimple.InvokeStmt;

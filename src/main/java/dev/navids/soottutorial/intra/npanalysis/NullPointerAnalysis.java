@@ -1,13 +1,18 @@
-package dev.navids.soottutorial.intraanalysis.npanalysis;
+package dev.navids.soottutorial.intra.npanalysis;
 
 
 import soot.Local;
 import soot.Unit;
 import soot.jimple.*;
 import soot.toolkits.graph.DirectedGraph;
+import soot.toolkits.scalar.ArraySparseSet;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
+class NullFlowSet extends ArraySparseSet<Local> {
+
+}
 public class NullPointerAnalysis extends ForwardFlowAnalysis<Unit, NullFlowSet> {
+
 
     enum AnalysisMode {
         MUST,
