@@ -1,7 +1,8 @@
 package dev.navids.soottutorial;
 
 import dev.navids.soottutorial.hellosoot.HelloSoot;
-import dev.navids.soottutorial.intraanalysis.UsageFinder;
+import dev.navids.soottutorial.intraanalysis.npanalysis.NPAMain;
+import dev.navids.soottutorial.intraanalysis.usagefinder.UsageFinder;
 
 import java.util.Arrays;
 
@@ -16,6 +17,8 @@ public class Main {
             HelloSoot.main(restOfTheArgs);
         else if(args[0].equals("UsageFinder"))
             UsageFinder.main(restOfTheArgs);
+        else if(args[0].equals("NullPointerAnalysis"))
+            NPAMain.main(restOfTheArgs);
         else
             System.err.println("The class '" + args[0] + "' does not exists or does not have a main method.");
     }

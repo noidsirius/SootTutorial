@@ -10,5 +10,11 @@ public class UsageExample {
         Printer p = new Printer();
         p.println(s);
     }
+
+    class Printer {
+        public void println(String line){
+            // do nothing
+        }
+    }
 }
 

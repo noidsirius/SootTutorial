@@ -37,11 +37,17 @@ In this chapter, you will visit a very simple code example to be familiar with S
 
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|
-|Find usages of a method| | [UsageFinder.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intraanalysis/UsageFinder.java) | [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/UsageExample.java) |
+|Find usages of a method| | [UsageFinder.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intraanalysis/usagefinder/UsageFinder.java) | [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/usagefinder/UsageExample.java) |
+|Null Pointer Analysis ||[NullPointerAnalysis](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intraanalysis/npanalysis/) | [NullPointerExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/NullPointerExample.java) |
+
 
 ### 3: Manipulate the code (:construction: WIP)
 ### 4: Call Graphs (:construction: WIP)
 ### 5: Interprocedural analysis (:construction: WIP)
+|Title |Tutorial | Soot Code        | Example Input  |
+| :---: |:-------------: |:-------------:| :-----:|
+| | | | |
+
 ### 6: Android (:construction: WIP)
 
 |Title |Tutorial | Soot Code        | Example Input  |
