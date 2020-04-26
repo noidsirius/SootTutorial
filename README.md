@@ -29,7 +29,18 @@ In this chapter, you will visit a very simple code example to be familiar with S
 
 <img src="https://github.com/noidsirius/SootTutorial/blob/master/docs/1/images/cfg.png" alt="Control Flow Graph" width="400"/>
 
-### 2: Some *Real* Static Analysis (:construction: WIP)
+### 2: Know the basic APIs
+
+In this chapter, you will be familiar with some basic but useful methods in Soot to help read, analyze, and even update java code.
+
+* `./gradlew run --args="BasicAPI"`: Analyze the class [Circle](https://github.com/noidsirius/SootTutorial/tree/master/demo/BasicAPI/Circle.java).
+
+|Title |Tutorial | Soot Code        | Example Input  |
+| :---: |:-------------: |:-------------:| :-----:|
+|Basic API || [BasicAPI.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/basicapi/BasicAPI.java) | [Circle](https://github.com/noidsirius/SootTutorial/tree/master/demo/BasicAPI/Circle.java) |
+
+
+### 3: Some *Real* Static Analysis (:construction: WIP)
 
 * `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream"`: Find usages of the method with the given subsignature in all methods of [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/UsageExample.java).
 * `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream"`: Find usages of the method with the given subsignature of the given class signature in all methods of [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/UsageExample.java).
@@ -41,14 +52,14 @@ In this chapter, you will visit a very simple code example to be familiar with S
 |Null Pointer Analysis ||[NullPointerAnalysis](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intraanalysis/npanalysis/) | [NullPointerExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/NullPointerExample.java) |
 
 
-### 3: Manipulate the code (:construction: WIP)
-### 4: Call Graphs (:construction: WIP)
-### 5: Interprocedural analysis (:construction: WIP)
+### 4: Manipulate the code (:construction: WIP)
+### 5: Call Graphs (:construction: WIP)
+### 6: Interprocedural analysis (:construction: WIP)
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|
 | | | | |
 
-### 6: Android (:construction: WIP)
+### 7: Android (:construction: WIP)
 
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|

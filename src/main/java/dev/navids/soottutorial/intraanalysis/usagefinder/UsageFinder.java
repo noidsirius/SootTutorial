@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UsageFinder {
     public static String sourceDirectory = System.getProperty("user.dir") + File.separator + "demo" + File.separator + "IntraAnalysis";
@@ -25,19 +26,21 @@ public class UsageFinder {
     }
 
     public static boolean doesInvokeTheMethod(Unit u, String methodSubsignature, String classSignature) {
-        final boolean[] returnValue = {false};
+        AtomicBoolean result = new AtomicBoolean(false);
         u.apply(new AbstractStmtSwitch() {
             @Override
-            public void caseInvokeStmt(InvokeStmt stmt) {
-                String s = stmt.getInvokeExpr().getMethod().getSubSignature();
-                if (stmt.getInvokeExpr().getMethod().getSubSignature().equals(methodSubsignature)) {
-                    if (classSignature == null || stmt.getInvokeExpr().getMethod().getDeclaringClass().getName().equals(classSignature))
-                        returnValue[0] = true;
+            public void caseInvokeStmt(InvokeStmt invokeStmt) {
+                String invokedSubsignature = invokeStmt.getInvokeExpr().getMethod().getSubSignature();
+                String invokedClassSignature = invokeStmt.getInvokeExpr().getMethod().getDeclaringClass().getName();
+                if (invokedSubsignature.equals(methodSubsignature)) {
+                    if (classSignature == null || invokedClassSignature.equals(classSignature)) {
+                        result.set(true);
+                    }
                 }
 
             }
         });
-        return returnValue[0];
+        return result.get();
     }
 
     public static void main(String[] args) {
