@@ -37,7 +37,7 @@ dependencies {
     implementation ([group: 'ca.mcgill.sable', name: 'soot', version: '4.0.0'])
     implementation ('org.slf4j:slf4j-nop:1.7.5')
     implementation 'org.graphstream:gs-core:1.3'
-//    implementation 'org.graphstream:gs-ui:1.3'
+    implementation 'org.graphstream:gs-ui:1.3'
     implementation('log4j:log4j:1.2.15') {
         exclude group: 'javax.jms', module: 'jms'
         exclude group: 'com.sun.jdmk', module: 'jmxtools'

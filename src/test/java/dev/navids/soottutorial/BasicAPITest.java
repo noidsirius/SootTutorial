@@ -37,4 +37,10 @@ public class BasicAPITest {
         assertNotNull(circleClass.getFieldUnsafe("double PI"));
         assertEquals(1, circleClass.getMethod("int area(boolean)").getActiveBody().getTraps().size());
     }
+    @Test public void testCallGraph(){
+        BasicAPI.setupSoot();
+        SootClass circleClass = Scene.v().getSootClass(BasicAPI.circleClassName);
+        SootMethod areaMethod = circleClass.getMethod("int area(boolean)");
+        assertTrue(Scene.v().getCallGraph().edgesOutOf(areaMethod).hasNext());
+    }
 }

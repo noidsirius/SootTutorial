@@ -14,8 +14,8 @@ public class Circle {
 
     public static void main(String[] args){
         Circle circle = new Circle(5);
-        System.out.println(String.format("Actual area of circle is %d and it should be %d", circle.area(false),78));
-        System.out.println(String.format("Integer area of circle is %d and it should be %d", circle.area(true),81));
+        int actualArea = circle.area(false); // should be 78
+        int integerArea = circle.area(true); // should be 81
     }
 
     // A.K.A Gauss Circle Problem

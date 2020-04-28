@@ -34,6 +34,7 @@ In this chapter, you will visit a very simple code example to be familiar with S
 In this chapter, you will be familiar with some basic but useful methods in Soot to help read, analyze, and even update java code.
 
 * `./gradlew run --args="BasicAPI"`: Analyze the class [Circle](https://github.com/noidsirius/SootTutorial/tree/master/demo/BasicAPI/Circle.java).
+* `./gradlew run --args="BasicAPI draw"`: Analyze the class [Circle](https://github.com/noidsirius/SootTutorial/tree/master/demo/BasicAPI/Circle.java) and draws the call graph.
 
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|
