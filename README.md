@@ -38,8 +38,10 @@ In this chapter, you will be familiar with some basic but useful methods in Soot
 
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|
-|Basic API || [BasicAPI.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/basicapi/BasicAPI.java) | [Circle](https://github.com/noidsirius/SootTutorial/tree/master/demo/BasicAPI/Circle.java) |
+|Basic API |[Doc](https://medium.com/@noidsirius/know-the-basic-tools-in-soot-18f394318a9c)| [BasicAPI.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/basicapi/BasicAPI.java) | [Circle](https://github.com/noidsirius/SootTutorial/tree/master/demo/BasicAPI/Circle.java) |
 
+
+<img src="https://github.com/noidsirius/SootTutorial/blob/master/docs/2/images/callgraph.png" alt="Call Graph" width="400"/>
 
 ### 3: Some *Real* Static Analysis (:construction: WIP)
 
