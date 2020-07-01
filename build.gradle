@@ -6,13 +6,9 @@
  * User Manual available at https://docs.gradle.org/5.4.1/userguide/tutorial_java_projects.html
  */
 
-plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
+apply plugin: 'java'
+apply plugin: 'jacoco'
 
-    // Apply the application plugin to add support for building an application
-    id 'application'
-}
 
 repositories {
     // Use jcenter for resolving your dependencies.
@@ -60,6 +56,13 @@ test {
 task buildDemoClass(type: Exec) {
     workingDir '.'
     commandLine './buildDemo.sh'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
 }
 
 build.dependsOn buildDemoClass
