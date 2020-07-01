@@ -29,13 +29,13 @@ public class AndroidTracer {
         Options.v().set_whole_program(true);
         Options.v().set_prepend_classpath(true);
         Options.v().set_validate(true);
-        Options.v().set_src_prec(Options.src_prec_apk);
+//        Options.v().set_src_prec(Options.src_prec_class);
         Options.v().set_output_format(Options.output_format_dex);
-        Options.v().set_android_jars(androidJar);
-        Options.v().set_process_dir(Collections.singletonList(apkPath));
+//        Options.v().set_android_jars(androidJar);
+        Options.v().set_process_dir(Collections.singletonList("/Users/navid/Downloads/apktool_2.4.0.jar"));
         Options.v().set_include_all(true);
         Options.v().set_process_multiple_dex(true);
-        Options.v().set_output_dir(outputPath);
+//        Options.v().set_output_dir(outputPath);
         Scene.v().addBasicClass("java.io.PrintStream",SootClass.SIGNATURES);
         Scene.v().addBasicClass("java.lang.System",SootClass.SIGNATURES);
         Scene.v().loadNecessaryClasses();
@@ -58,11 +58,14 @@ public class AndroidTracer {
         PackManager.v().getPack("jtp").add(new Transform("jtp.myLogger", new BodyTransformer() {
             @Override
             protected void internalTransform(Body b, String phaseName, Map<String, String> options) {
+                JimpleBody body = (JimpleBody) b;
                 // Check if this method is not the incrementAndLog method
                 if(b.getMethod().getSignature().equals(incNLogMethod.getSignature()))
                     return;
                 UnitPatchingChain units = b.getUnits();
-                Unit injectionUnitPosition = getFirstInsertableUnit(b);
+
+                // There should be no unit before JIdentity statements; so, we find the first unit that we can inject our code before it.
+                Unit injectionUnitPosition = body.getFirstNonIdentityStmt();
                 // Add a log message to show what method is calling incrementAndLogs
                 addLogUnits(b, injectionUnitPosition, "STATICCOUNTER METHOD " + b.getMethod().getSignature());
                 units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v().newStaticInvokeExpr(incNLogMethod.makeRef())), injectionUnitPosition);
@@ -137,22 +140,4 @@ public class AndroidTracer {
         return packageName;
     }
 
-    // A helper method to find the first unit that we can inject our code before it.
-    // There should be no unit before JIdentity statements
-    public static Unit getFirstInsertableUnit(Body b){
-
-        Chain<Unit> units = b.getUnits();
-        Unit afterLastIdentity = null;
-        for(Unit u2 : units){
-            if(u2 instanceof JIdentityStmt)
-                afterLastIdentity = u2;
-            else
-                break;
-        }
-        if(afterLastIdentity == null)
-            afterLastIdentity = units.getFirst();
-        else
-            afterLastIdentity = units.getSuccOf(afterLastIdentity);
-        return afterLastIdentity;
-    }
 }
