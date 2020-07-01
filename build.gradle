@@ -14,6 +14,8 @@ plugins {
     id 'application'
 }
 
+apply plugin: 'jacoco'
+
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
@@ -60,6 +62,13 @@ test {
 task buildDemoClass(type: Exec) {
     workingDir '.'
     commandLine './buildDemo.sh'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
 }
 
 build.dependsOn buildDemoClass
