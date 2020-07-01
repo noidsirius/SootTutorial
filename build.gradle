@@ -6,9 +6,15 @@
  * User Manual available at https://docs.gradle.org/5.4.1/userguide/tutorial_java_projects.html
  */
 
-apply plugin: 'java'
-apply plugin: 'jacoco'
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
 
+    // Apply the application plugin to add support for building an application
+    id 'application'
+}
+
+apply plugin: 'jacoco'
 
 repositories {
     // Use jcenter for resolving your dependencies.
