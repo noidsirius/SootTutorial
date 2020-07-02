@@ -1,5 +1,7 @@
 package dev.navids.soottutorial;
 
+import dev.navids.soottutorial.android.AndroidClassInjector;
+import dev.navids.soottutorial.android.AndroidLogger;
 import dev.navids.soottutorial.basicapi.BasicAPI;
 import dev.navids.soottutorial.hellosoot.HelloSoot;
 import dev.navids.soottutorial.intraanalysis.npanalysis.NPAMain;
@@ -16,8 +18,14 @@ public class Main {
         String[] restOfTheArgs = Arrays.copyOfRange(args, 1, args.length);
         if(args[0].equals("HelloSoot"))
             HelloSoot.main(restOfTheArgs);
-        if(args[0].equals("BasicAPI"))
+        else if(args[0].equals("BasicAPI"))
             BasicAPI.main(restOfTheArgs);
+        else if(args[0].equals("AndroidLogger")) {
+            AndroidLogger.main(restOfTheArgs);
+        }
+        else if(args[0].equals("AndroidClassInjector")) {
+            AndroidClassInjector.main(restOfTheArgs);
+        }
         else if(args[0].equals("UsageFinder"))
             UsageFinder.main(restOfTheArgs);
         else if(args[0].equals("NullPointerAnalysis"))
