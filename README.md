@@ -7,12 +7,13 @@ This repository contains (will contain) several simple examples of static progra
 ## Who this tutorial is for?
 Anybody who knows Java programming and wants to do some static analysis in practice but does not know anything about Soot and static analysis in theory.
 
-If you have some knowledge about static program analysis I suggest you learn Soot from [here](https://github.com/Sable/soot/wiki/Tutorials).
+If you have some prior knowledge about static program analysis I suggest you learn Soot from [here](https://github.com/Sable/soot/wiki/Tutorials).
 
 ### [Why another tutorial for Soot?](https://github.com/noidsirius/SootTutorial/blob/master/docs/Other/Motivation.md)
 
 ## Setup
-[Setup](https://github.com/noidsirius/SootTutorial/blob/master/docs/Setup/)
+In short, use Java 8 and run `./gradlew build`. For more information and Docker setup, follow this [link](https://github.com/noidsirius/SootTutorial/blob/master/docs/Setup/). 
+
   
 ## Chapters
 ### 1: Get your hands dirty
@@ -32,7 +33,7 @@ In this chapter, you will visit a very simple code example to be familiar with S
 
 ### 2: Know the basic APIs
 
-In this chapter, you will be familiar with some basic but useful methods in Soot to help read, analyze, and even update java code.
+In this chapter, you get familiar with some basic but useful methods in Soot to help read, analyze, and even update java code.
 
 * `./gradlew run --args="BasicAPI"`: Analyze the class [Circle](https://github.com/noidsirius/SootTutorial/tree/master/demo/BasicAPI/Circle.java).
 * `./gradlew run --args="BasicAPI draw"`: Analyze the class [Circle](https://github.com/noidsirius/SootTutorial/tree/master/demo/BasicAPI/Circle.java) and draws the call graph.
@@ -44,7 +45,27 @@ In this chapter, you will be familiar with some basic but useful methods in Soot
 
 <img src="https://github.com/noidsirius/SootTutorial/blob/master/docs/2/images/callgraph.png" alt="Call Graph" width="400"/>
 
-### 3: Some *Real* Static Analysis (:construction: WIP)
+### 3: Android Instrumentation
+
+In this chapter, you learn how to insert code into Android apps (without having their source code) using Soot. To run the code, you need Android SDK (check this [link](https://github.com/noidsirius/SootTutorial/blob/master/docs/Setup/)).
+
+* `./gradlew run --args="AndroidLogger"`: Insert logging method calls at the beginning of APK methods of [Numix Calculator](https://github.com/noidsirius/SootTutorial/tree/master/demo/Android/calc.apk).
+* `./gradlew run --args="AndroidClassInjector"`: Create a new class from scratch and inject it to the  [Numix Calculator](https://github.com/noidsirius/SootTutorial/tree/master/demo/Android/calc.apk).
+
+The instrumented APK is located in `demo/Android/Instrumented`. You need to sign it in order to install on an Android device:
+```aidl
+cd ./demo/Android
+./sign.sh Instrumented/calc.apk key "android"
+adb install -r -t Instrumented/calc.apk
+```
+To see the logs, run `adb logcat | grep -e "<SOOT_TUTORIAL>"`
+
+|Title |Tutorial | Soot Code        | Example APK|
+| :---: |:-------------: |:-------------:| :-----:|
+|Log method calls in an APK| | [AndroidLogger.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/android/AndroidLogger.java) | [Numix Calculator](https://github.com/noidsirius/SootTutorial/tree/master/demo/Android/calc.apk) (from [F-Droid](https://f-droid.org/en/packages/com.numix.calculator/))|
+|Create and inject a class into an APK| | [AndroidClassInjector.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/android/AndroidClassInjector.java) | [Numix Calculator](https://github.com/noidsirius/SootTutorial/tree/master/demo/Android/calc.apk) (from [F-Droid](https://f-droid.org/en/packages/com.numix.calculator/))|
+
+### 4: Some *Real* Static Analysis (:construction: WIP)
 
 * `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream"`: Find usages of the method with the given subsignature in all methods of [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/UsageExample.java).
 * `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream"`: Find usages of the method with the given subsignature of the given class signature in all methods of [UsageExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/UsageExample.java).
@@ -56,15 +77,10 @@ In this chapter, you will be familiar with some basic but useful methods in Soot
 |Null Pointer Analysis ||[NullPointerAnalysis](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/intraanalysis/npanalysis/) | [NullPointerExample.java](https://github.com/noidsirius/SootTutorial/tree/master/demo/IntraAnalysis/NullPointerExample.java) |
 
 
-### 4: Manipulate the code (:construction: WIP)
-### 5: Call Graphs (:construction: WIP)
-### 6: Interprocedural analysis (:construction: WIP)
+### 5: Manipulate the code (:construction: WIP)
+### 6: Call Graphs (:construction: WIP)
+### 7: Interprocedural analysis (:construction: WIP)
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|
 | | | | |
 
-### 7: Android (:construction: WIP)
-
-|Title |Tutorial | Soot Code        | Example Input  |
-| :---: |:-------------: |:-------------:| :-----:|
-|Trace an APK| | [AndroidTracer.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/android/AndroidTracer.java) | |
