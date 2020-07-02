@@ -4,6 +4,23 @@ branches:
       - master
 jdk:
   - openjdk8
+install:
+  # Download and unzip the Android command line tools (if not already there thanks to the cache mechanism)
+  # Latest version of this file available here: https://developer.android.com/studio/#command-tools
+  - if test ! -e $HOME/android-cmdline-tools/cmdline-tools.zip ; then curl https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip > $HOME/android-cmdline-tools/cmdline-tools.zip ; fi
+  - unzip -qq -n $HOME/android-cmdline-tools/cmdline-tools.zip -d $HOME/android-cmdline-tools
+  # Install or update Android SDK components (will not do anything if already up to date thanks to the cache mechanism)
+  - echo y | $HOME/android-cmdline-tools/tools/bin/sdkmanager --sdk_root=$HOME/android-sdk 'platform-tools' #> /dev/null
+  # Latest version of build-tools available here: https://developer.android.com/studio/releases/build-tools.html
+  - echo y | $HOME/android-cmdline-tools/tools/bin/sdkmanager --sdk_root=$HOME/android-sdk 'build-tools;29.0.3' #> /dev/null
+  - echo y | $HOME/android-cmdline-tools/tools/bin/sdkmanager --sdk_root=$HOME/android-sdk 'platforms;android-29' #> /dev/null
+cache:
+  directories:
+    # Android SDK
+    - $HOME/android-cmdline-tools
+    - $HOME/android-sdk
+env:
+  - ANDROID_HOME=$HOME/android-sdk
 script:
   - ./gradlew check
   - ./gradlew jacocoTestReport
