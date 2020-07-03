@@ -12,7 +12,7 @@ Since the stable version of Soot does not support Java 9+ (with modules) yet, ma
 ### Android
 For codes that analyze Android apps, you need to install [Android SDK](https://developer.android.com/studio), [build-tools 29.0.3](https://developer.android.com/studio/releases/build-tools), and [adb](https://developer.android.com/studio/command-line/adb). Set the environmental variable `ANDROID_HOME` to the path to Android SDK. For example in MacOSX you can set it by `export ANDROID_HOME=~/Library/Android/sdk/`.
 
-# With Docker
+## With Docker
 
 - Build the image `docker build . -t soot_tutorial`
 - Run the image `docker run -it soot_tutorial`
