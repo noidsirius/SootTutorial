@@ -1,7 +1,7 @@
 # Soot Tutorial
 [![Build Status](https://travis-ci.com/noidsirius/SootTutorial.svg?branch=master)](https://travis-ci.com/noidsirius/SootTutorial)
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/noidsirius/SootTutorial)
-[![Docker Pull](https://img.shields.io/docker/pulls/noidsirius/soot_tutorial)
+[![Docker Pull](https://img.shields.io/docker/pulls/noidsirius/soot_tutorial)](https://hub.docker.com/r/noidsirius/soot_tutorial)
 
 
 This repository contains (will contain) several simple examples of static program analysis in Java using [Soot](https://github.com/Sable/soot).
