@@ -14,5 +14,5 @@ For codes that analyze Android apps, you need to install [Android SDK](https://d
 
 ## With Docker
 
-- Build the image `docker build . -t soot_tutorial`
-- Run the image `docker run -it soot_tutorial`
+- Use the Docker image from docker hub (`docker run -it noidsirius/soot_tutorial:latest`) or
+- Build the image locally (`docker build . -t soot_tutorial`) and run it (`docker run -it soot_tutorial`)
