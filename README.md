@@ -64,8 +64,10 @@ To see the logs, run `adb logcat | grep -e "<SOOT_TUTORIAL>"`
 
 |Title |Tutorial | Soot Code        | Example APK|
 | :---: |:-------------: |:-------------:| :-----:|
-|Log method calls in an APK| | [AndroidLogger.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/android/AndroidLogger.java) | [Numix Calculator](https://github.com/noidsirius/SootTutorial/tree/master/demo/Android/calc.apk) (from [F-Droid](https://f-droid.org/en/packages/com.numix.calculator/))|
-|Create and inject a class into an APK| | [AndroidClassInjector.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/android/AndroidClassInjector.java) | [Numix Calculator](https://github.com/noidsirius/SootTutorial/tree/master/demo/Android/calc.apk) (from [F-Droid](https://f-droid.org/en/packages/com.numix.calculator/))|
+|Log method calls in an APK| [Doc](https://medium.com/@noidsirius/instrumenting-android-apps-with-soot-dd6f146ff4d2)| [AndroidLogger.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/android/AndroidLogger.java) | [Numix Calculator](https://github.com/noidsirius/SootTutorial/tree/master/demo/Android/calc.apk) (from [F-Droid](https://f-droid.org/en/packages/com.numix.calculator/))|
+|Create and inject a class into an APK| [Doc](https://medium.com/@noidsirius/instrumenting-android-apps-with-soot-dd6f146ff4d2) | [AndroidClassInjector.java](https://github.com/noidsirius/SootTutorial/tree/master/src/main/java/dev/navids/soottutorial/android/AndroidClassInjector.java) | [Numix Calculator](https://github.com/noidsirius/SootTutorial/tree/master/demo/Android/calc.apk) (from [F-Droid](https://f-droid.org/en/packages/com.numix.calculator/))|
+
+<img src="https://github.com/noidsirius/SootTutorial/blob/master/docs/3/images/packs.png" alt="Soot Packs + Dexpler" width="400"/>
 
 ### 4: Some *Real* Static Analysis (:construction: WIP)
 
