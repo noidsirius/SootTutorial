@@ -21,6 +21,7 @@ public class HelloSoot {
 
     public static void setupSoot() {
         G.reset();
+        Options.v().set_prepend_classpath(true);
         Options.v().set_allow_phantom_refs(true);
         Options.v().set_soot_classpath(sourceDirectory);
         SootClass sc = Scene.v().loadClassAndSupport(clsName);
