@@ -21,6 +21,7 @@ public class BasicAPI {
 // Uncomment line below to import essential Java classes
 //        Options.v().set_prepend_classpath(true);
 // Comment the line below to not have phantom refs (you need to uncomment the line above)
+        Options.v().set_prepend_classpath(true);
         Options.v().set_allow_phantom_refs(true);
         Options.v().set_soot_classpath(sourceDirectory);
         Options.v().set_output_format(Options.output_format_jimple);
