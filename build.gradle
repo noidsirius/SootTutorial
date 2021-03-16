@@ -19,27 +19,28 @@ apply plugin: 'jacoco'
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
-    jcenter()
-    mavenCentral()
     maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots'
     }
-    maven {
-        url 'https://soot-build.cs.uni-paderborn.de/nexus/repository/soot-release/'
-    }
+    jcenter()
+    mavenCentral()
+
+//    maven {
+//        url 'https://soot-build.cs.uni-paderborn.de/nexus/repository/soot-release/'
+//    }
 }
 
 dependencies {
 
-//    implementation 'net.sf.trove4j:trove4j:3.0.3'
     // TODO: should use maven repositories instead; however, at the moment they're not available
-//    compile fileTree(dir: 'lib', include: '*.jar')
-    implementation 'de.tud.sse:soot-infoflow:2.8'
-    implementation 'de.tud.sse:soot-infoflow-android:2.8'
-    implementation 'de.tud.sse:soot-infoflow-cmd:2.8'
-    implementation 'de.tud.sse:soot-infoflow-summaries:2.8'
+    implementation 'net.sf.trove4j:trove4j:3.0.3'
+    compile fileTree(dir: 'lib', include: '*.jar')
 
-    implementation ([group: 'org.soot-oss', name: 'soot', version: '4.2.1'])
+//    implementation 'de.tud.sse:soot-infoflow:2.8'
+//    implementation 'de.tud.sse:soot-infoflow-android:2.8'
+//    implementation 'de.tud.sse:soot-infoflow-cmd:2.8'
+//    implementation 'de.tud.sse:soot-infoflow-summaries:2.8'
+    implementation 'org.soot-oss:soot:4.2.1'
     implementation ('org.slf4j:slf4j-nop:1.7.5')
     implementation 'org.graphstream:gs-core:1.3'
     implementation 'org.graphstream:gs-ui:1.3'
