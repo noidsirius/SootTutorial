@@ -6,6 +6,7 @@ import soot.jimple.*;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.Options;
+import soot.toolkits.scalar.Pair;
 
 import java.io.File;
 import java.util.*;
@@ -80,7 +81,15 @@ public class BasicAPI {
         if (args.length > 0 && args[0].equals("draw"))
             drawGraph = true;
         if (drawGraph) {
-            Visualizer.v().addCallGraph(callGraph);
+//            Visualizer.v().addCallGraph(callGraph);
+            Visualizer.v().addCallGraph(callGraph,
+                    edge -> edge.src().getDeclaringClass().isApplicationClass(),
+                    sootMethod -> new Pair<>(
+                            sootMethod.getDeclaringClass().isApplicationClass()
+                                    ? "cg_node, default_color" : "cg_node, cg_lib_class"
+                            , sootMethod.getDeclaringClass().isApplicationClass()
+                                    ? sootMethod.getSubSignature() : sootMethod.getSignature())
+                );
             Visualizer.v().draw();
         }
     }

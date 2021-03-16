@@ -2,6 +2,8 @@ package dev.navids.soottutorial;
 
 import dev.navids.soottutorial.android.AndroidClassInjector;
 import dev.navids.soottutorial.android.AndroidLogger;
+import dev.navids.soottutorial.android.Callgraph;
+import dev.navids.soottutorial.android.PointsToAnalysis;
 import dev.navids.soottutorial.basicapi.BasicAPI;
 import dev.navids.soottutorial.hellosoot.HelloSoot;
 import dev.navids.soottutorial.intraanalysis.npanalysis.NPAMain;
@@ -25,6 +27,12 @@ public class Main {
         }
         else if(args[0].equals("AndroidClassInjector")) {
             AndroidClassInjector.main(restOfTheArgs);
+        }
+        else if(args[0].equals("AndroidCallGraph")) {
+            Callgraph.main(restOfTheArgs);
+        }
+        else if(args[0].equals("AndroidPTA")) {
+            PointsToAnalysis.main(restOfTheArgs);
         }
         else if(args[0].equals("UsageFinder"))
             UsageFinder.main(restOfTheArgs);

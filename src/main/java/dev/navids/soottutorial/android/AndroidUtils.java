@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class InstrumentUtil {
+public class AndroidUtils {
     public static final String TAG = "<SOOT_TUTORIAL>";
 
     public static void setupSoot(String androidJar, String apkPath, String outputPath) {
@@ -44,7 +44,7 @@ public class InstrumentUtil {
         Value logType = StringConstant.v(TAG);
         Value logMsg = logMessage;
         if (value != null)
-            logMsg = InstrumentUtil.appendTwoStrings(b, logMessage, value, generated);
+            logMsg = AndroidUtils.appendTwoStrings(b, logMessage, value, generated);
         SootMethod sm = Scene.v().getMethod("<android.util.Log: int i(java.lang.String,java.lang.String)>");
         StaticInvokeExpr invokeExpr = Jimple.v().newStaticInvokeExpr(sm.makeRef(), logType, logMsg);
         generated.add(Jimple.v().newInvokeStmt(invokeExpr));

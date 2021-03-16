@@ -28,22 +28,22 @@ public class AndroidLogger {
             Arrays.asList(files).forEach(File::delete);
         }
         // Initialize Soot
-        InstrumentUtil.setupSoot(androidJar, apkPath, outputPath);
+        AndroidUtils.setupSoot(androidJar, apkPath, outputPath);
         // Add a transformation pack in order to add the statement "System.out.println(<content>) at the beginning of each Application method
         PackManager.v().getPack("jtp").add(new Transform("jtp.myLogger", new BodyTransformer() {
             @Override
             protected void internalTransform(Body b, String phaseName, Map<String, String> options) {
                 // First we filter out Android framework methods
-                if(InstrumentUtil.isAndroidMethod(b.getMethod()))
+                if(AndroidUtils.isAndroidMethod(b.getMethod()))
                     return;
                 JimpleBody body = (JimpleBody) b;
                 UnitPatchingChain units = b.getUnits();
                 List<Unit> generatedUnits = new ArrayList<>();
 
                 // The message that we want to log
-                String content = String.format("%s Beginning of method %s", InstrumentUtil.TAG, body.getMethod().getSignature());
+                String content = String.format("%s Beginning of method %s", AndroidUtils.TAG, body.getMethod().getSignature());
                 // In order to call "System.out.println" we need to create a local containing "System.out" value
-                Local psLocal = InstrumentUtil.generateNewLocal(body, RefType.v("java.io.PrintStream"));
+                Local psLocal = AndroidUtils.generateNewLocal(body, RefType.v("java.io.PrintStream"));
                 // Now we assign "System.out" to psLocal
                 SootField sysOutField = Scene.v().getField("<java.lang.System: java.io.PrintStream out>");
                 AssignStmt sysOutAssignStmt = Jimple.v().newAssignStmt(psLocal, Jimple.v().newStaticFieldRef(sysOutField.makeRef()));

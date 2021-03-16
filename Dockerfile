@@ -6,4 +6,5 @@ RUN echo y | /android-cmdline-tools/tools/bin/sdkmanager --sdk_root=/android-sdk
 ENV ANDROID_HOME /android-sdk/
 WORKDIR /app
 COPY . /app
+RUN /app/gradlew build
 

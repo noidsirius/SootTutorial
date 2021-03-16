@@ -28,9 +28,9 @@ public class AndroidClassInjector {
             Arrays.asList(files).forEach(File::delete);
         }
         // Initialize Soot
-        InstrumentUtil.setupSoot(androidJar, apkPath, outputPath);
+        AndroidUtils.setupSoot(androidJar, apkPath, outputPath);
         // Find the package name of the APK
-        String packageName = InstrumentUtil.getPackageName(apkPath);
+        String packageName = AndroidUtils.getPackageName(apkPath);
         // Create and inject a class with a field and a method to the APK
         SootMethod incNLogMethod = injectCode(packageName);
         // Add a transformation pack in order to insert incrementAndLog method at top of each method in the app
@@ -59,12 +59,12 @@ public class AndroidClassInjector {
         protected void internalTransform(Body b, String s, Map<String, String> map) {
             JimpleBody body = (JimpleBody) b;
             // Check if this method is not the incrementAndLog method and an Android Framework method
-            if(b.getMethod().getSignature().equals(incNLogMethod.getSignature()) || InstrumentUtil.isAndroidMethod(b.getMethod()))
+            if(b.getMethod().getSignature().equals(incNLogMethod.getSignature()) || AndroidUtils.isAndroidMethod(b.getMethod()))
                 return;
             UnitPatchingChain units = b.getUnits();
             List<Unit> generated = new ArrayList<>();
             // Add a log message to show what method is calling incrementAndLogs
-            generated.addAll(InstrumentUtil.generateLogStmts(body, "Beginning of method " + b.getMethod().getSignature()));
+            generated.addAll(AndroidUtils.generateLogStmts(body, "Beginning of method " + b.getMethod().getSignature()));
             // Call incrementAndLog method
             generated.add(Jimple.v().newInvokeStmt(Jimple.v().newStaticInvokeExpr(incNLogMethod.makeRef())));
             units.insertBefore(generated, body.getFirstNonIdentityStmt());
@@ -99,14 +99,14 @@ public class AndroidClassInjector {
 
         UnitPatchingChain units = body.getUnits();
         // Increment counterField by one
-        Local counterLocal = InstrumentUtil.generateNewLocal(body, IntType.v());
+        Local counterLocal = AndroidUtils.generateNewLocal(body, IntType.v());
         units.add(Jimple.v().newAssignStmt(counterLocal, Jimple.v().newStaticFieldRef(counterField.makeRef())));
         units.add(Jimple.v().newAssignStmt(counterLocal,
                 Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
         units.add(Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(counterField.makeRef()),counterLocal));
 
         // Log the counter value
-        units.addAll(InstrumentUtil.generateLogStmts(body, "Counter's value: ", counterLocal));
+        units.addAll(AndroidUtils.generateLogStmts(body, "Counter's value: ", counterLocal));
 
         // The method should be finished by a return
         Unit returnUnit = Jimple.v().newReturnVoidStmt();
