@@ -19,9 +19,9 @@ public class AndroidInstrumentTest {
         if(System.getenv().containsKey("ANDROID_HOME"))
             androidJar = System.getenv("ANDROID_HOME")+ File.separator+"platforms";
         String apkPath = System.getProperty("user.dir") + File.separator + "demo" + File.separator + "Android" + File.separator + "/calc.apk";
-        packageName = AndroidUtils.getPackageName(apkPath);
+        packageName = AndroidUtil.getPackageName(apkPath);
         assertEquals(packageName, "com.numix.calculator");
-        AndroidUtils.setupSoot(androidJar, apkPath, "/tmp");
+        InstrumentUtil.setupSoot(androidJar, apkPath, "/tmp");
         assertNotNull(Scene.v().grabMethod(anAPKMethodSignature));
     }
 
@@ -36,7 +36,7 @@ public class AndroidInstrumentTest {
         SootMethod incNLogMethod = AndroidClassInjector.addIncNLogMethod(staticCounterClass, counterField);
         assertEquals(incNLogMethod.getSignature(), incNLogMethodSignature);
         Unit lastUnit = incNLogMethod.getActiveBody().getUnits().getLast();
-        assertTrue(incNLogMethod.getActiveBody().getUnits().getPredOf(lastUnit).toString().contains(AndroidUtils.TAG));
+        assertTrue(incNLogMethod.getActiveBody().getUnits().getPredOf(lastUnit).toString().contains(InstrumentUtil.TAG));
     }
 
     @Test

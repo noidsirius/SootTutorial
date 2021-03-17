@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class AndroidUtils {
+public class InstrumentUtil {
     public static final String TAG = "<SOOT_TUTORIAL>";
 
     public static void setupSoot(String androidJar, String apkPath, String outputPath) {
@@ -44,7 +44,7 @@ public class AndroidUtils {
         Value logType = StringConstant.v(TAG);
         Value logMsg = logMessage;
         if (value != null)
-            logMsg = AndroidUtils.appendTwoStrings(b, logMessage, value, generated);
+            logMsg = InstrumentUtil.appendTwoStrings(b, logMessage, value, generated);
         SootMethod sm = Scene.v().getMethod("<android.util.Log: int i(java.lang.String,java.lang.String)>");
         StaticInvokeExpr invokeExpr = Jimple.v().newStaticInvokeExpr(sm.makeRef(), logType, logMsg);
         generated.add(Jimple.v().newInvokeStmt(invokeExpr));
@@ -100,24 +100,5 @@ public class AndroidUtils {
     public static Local generateNewLocal(Body body, Type type) {
         LocalGenerator lg = new LocalGenerator(body);
         return lg.generateLocal(type);
-    }
-
-    public static String getPackageName(String apkPath) {
-        String packageName = "";
-        try {
-            ProcessManifest manifest = new ProcessManifest(apkPath);
-            packageName = manifest.getPackageName();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-        return packageName;
-    }
-
-    public static boolean isAndroidMethod(SootMethod sootMethod){
-        String clsSig = sootMethod.getDeclaringClass().getName();
-        List<String> androidPrefixPkgNames = Arrays.asList("android.", "com.google.android", "androidx.");
-        return androidPrefixPkgNames.stream().map(clsSig::startsWith).reduce(false, (res, curr) -> res || curr);
     }
 }

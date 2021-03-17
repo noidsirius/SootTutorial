@@ -1,6 +1,7 @@
 package dev.navids.soottutorial.visual;
 
-import dev.navids.soottutorial.android.AndroidUtils;
+import dev.navids.soottutorial.android.AndroidUtil;
+import dev.navids.soottutorial.android.InstrumentUtil;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
@@ -25,7 +26,7 @@ public class AndroidCallGraphFilter implements CallGraphFilter {
     }
 
     private boolean isValidMethod(SootMethod sootMethod){
-        if(AndroidUtils.isAndroidMethod(sootMethod))
+        if(AndroidUtil.isAndroidMethod(sootMethod))
             return false;
         if(sootMethod.getDeclaringClass().getPackageName().startsWith("java"))
             return false;

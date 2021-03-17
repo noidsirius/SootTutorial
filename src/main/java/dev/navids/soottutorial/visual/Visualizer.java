@@ -30,7 +30,7 @@ public class Visualizer {
     private Graph graph;
     private SpriteManager sman;
     private Viewer viewer;
-    private final static String[] colors = new String[]{"red", "blue", "darkgoldenrod", "magenta", "purple", "mediumaquamarine", "brown", "seagreen", "darkslategrey", "indianred"};
+    private final static String[] colors = new String[]{"red", "blue", "seagreen", "darkslategrey", "brown",  "darkgoldenrod", "purple", "mediumaquamarine", "magenta", "indianred"};
     private Visualizer(){
         if (graph != null)
             graph.clear();
@@ -212,6 +212,8 @@ public class Visualizer {
             }
             else if(coloredNode) {
                 String clsName = sootMethod.getDeclaringClass().toString();
+                if(clsName.contains("$"))
+                    clsName = clsName.substring(0, clsName.indexOf("$"));
                 if (!visitedClasses.contains(clsName))
                     visitedClasses.add(clsName);
                 int clsIndex = visitedClasses.indexOf(clsName);
