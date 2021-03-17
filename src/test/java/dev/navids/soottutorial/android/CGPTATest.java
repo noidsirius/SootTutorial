@@ -19,7 +19,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class CGPTATest {
-    private String mainActivityDialogueClassName = "MainActivity$2$1";
+    private String mainActivityDialogueClassName = "MainActivity$Button2$Dialogue1";
     private String apkPath = System.getProperty("user.dir") + File.separator + "demo" + File.separator + "Android" + File.separator + "/st_demo.apk";
     private String androidJar = System.getenv().containsKey("ANDROID_HOME")
                                     ? System.getenv("ANDROID_HOME")+ File.separator+"platforms"
@@ -95,14 +95,14 @@ public class CGPTATest {
         assertTrue(pointsToAnalysis instanceof PAG);
         PointsToSet ptaSet1 = pointsToAnalysis.reachingObjects(allParentChildLocals.get(0).getO1());
         PointsToSet ptaSet2 = pointsToAnalysis.reachingObjects(allParentChildLocals.get(1).getO1());
+        PointsToSet ptaSet3 = pointsToAnalysis.reachingObjects(allParentChildLocals.get(2).getO1());
         PointsToSet ptaSet4 = pointsToAnalysis.reachingObjects(allParentChildLocals.get(3).getO1());
-        PointsToSet ptaSet6 = pointsToAnalysis.reachingObjects(allParentChildLocals.get(5).getO1());
         assertTrue(ptaSet1 instanceof DoublePointsToSet);
         assertTrue(ptaSet1.hasNonEmptyIntersection(ptaSet2));
+        assertTrue(ptaSet1.hasNonEmptyIntersection(ptaSet3));
         assertFalse(ptaSet1.hasNonEmptyIntersection(ptaSet4));
-        assertTrue(ptaSet1.hasNonEmptyIntersection(ptaSet6));
-        assertFalse(ptaSet2.hasNonEmptyIntersection(ptaSet6));
-        assertFalse(ptaSet4.hasNonEmptyIntersection(ptaSet6));
+        assertFalse(ptaSet2.hasNonEmptyIntersection(ptaSet3));
+        assertFalse(ptaSet3.hasNonEmptyIntersection(ptaSet4));
     }
 
 
