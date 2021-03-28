@@ -5,12 +5,14 @@ import dev.navids.soottutorial.visual.Visualizer;
 import org.xmlpull.v1.XmlPullParserException;
 import soot.*;
 import soot.jimple.InvokeStmt;
+import soot.jimple.NewExpr;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.android.InfoflowAndroidConfiguration;
 import soot.jimple.infoflow.android.SetupApplication;
 import soot.jimple.infoflow.android.axml.AXmlNode;
 import soot.jimple.infoflow.android.manifest.ProcessManifest;
+import soot.jimple.spark.pag.AllocNode;
 import soot.jimple.spark.pag.Node;
 import soot.jimple.spark.sets.DoublePointsToSet;
 import soot.jimple.spark.sets.P2SetVisitor;
@@ -53,7 +55,10 @@ public class AndroidPointsToAnalysis {
                 ((DoublePointsToSet)pointsToAnalysis.reachingObjects(local)).getOldSet().forall(new P2SetVisitor() {
                     @Override
                     public void visit(Node n) {
-                        System.out.println(String.format("Local %s in intermediaryMethod is allocated at %s", local, n));
+                        AllocNode allocNode = (AllocNode) n;
+                        SootMethod allocMethod = allocNode.getMethod();
+                        NewExpr allocExpr = (NewExpr) allocNode.getNewExpr();
+                        System.out.println(String.format("Local %s in intermediaryMethod is allocated at method %s through expression: %s", local, allocMethod, allocExpr));
                     }
                 });
             }
