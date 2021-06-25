@@ -84,7 +84,7 @@ The branch statements control the flow of the execution of statements. All possi
 You can draw this image by running
 
 ```
-./gradlew run --args='draw'
+./gradlew run --args="HelloSoot draw"
 ```
 
 ![Control Flow Graph](https://github.com/noidsirius/SootTutorial/blob/master/docs/1/images/cfg-number.png)
