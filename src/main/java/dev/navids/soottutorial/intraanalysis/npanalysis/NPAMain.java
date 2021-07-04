@@ -1,17 +1,17 @@
 package dev.navids.soottutorial.intraanalysis.npanalysis;
 
+import dev.navids.soottutorial.visual.Visualizer;
 import soot.*;
-import soot.jimple.InvokeStmt;
 import soot.jimple.JimpleBody;
 import soot.options.Options;
+import soot.toolkits.graph.ClassicCompleteUnitGraph;
 import soot.toolkits.graph.TrapUnitGraph;
 import soot.toolkits.graph.UnitGraph;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class NPAMain {
+    private final static String parameterMessage = "Please provide arguments, 1: MethodName (A, B, C), 2: Analysis Mode (MAY, MAY_P, MUST), 3: Visualize ('viz') ";
     public static String sourceDirectory = System.getProperty("user.dir") + File.separator + "demo" + File.separator + "IntraAnalysis";
     public static String clsName = "NullPointerExample";
 
@@ -29,36 +29,45 @@ public class NPAMain {
 
     public static void main(String[] args) {
         setupSoot();
-        SootClass mainClass = Scene.v().getSootClass(clsName);
-        for (SootMethod sm : mainClass.getMethods()) {
-            System.out.println("Method: " + sm.getSignature());
-            JimpleBody body = (JimpleBody) sm.retrieveActiveBody();
-            UnitGraph unitGraph = new TrapUnitGraph(body);
-            List<NullPointerAnalysis> npAnalyzers = new ArrayList<>();
-            npAnalyzers.add(new NullPointerAnalysis(unitGraph, NullPointerAnalysis.AnalysisMode.MUST));
-            npAnalyzers.add(new NullPointerAnalysis(unitGraph, NullPointerAnalysis.AnalysisMode.MAY_O));
-            npAnalyzers.add(new NullPointerAnalysis(unitGraph, NullPointerAnalysis.AnalysisMode.MAY_P));
-            int c = 0;
-            for(Unit unit : body.getUnits()){
-                c++;
-//                System.out.println("("+c+") " + unit + " --- " + mayNPAnalysis.getFlowBefore(unit) + " " + mustNPAnalysis.getFlowBefore(unit));
-//                if(nullPointerAnalysis.getFlowBefore(unit).size() == 0)
-//                    continue;
-                for(ValueBox usedValueBox : unit.getUseBoxes()){
-                    if(usedValueBox.getValue() instanceof Local){
-                        Local usedLocal = (Local) usedValueBox.getValue();
-                        for(NullPointerAnalysis npa: npAnalyzers){
-                            if(npa.getFlowBefore(unit).contains(usedLocal)){
-                                System.out.println("    Line " + unit.getJavaSourceStartLineNumber() +": " + npa.analysisMode + " NullPointer usage of local " + usedLocal + " in unit " + unit);
-                            }
-                        }
-
-//                        if(mustNPAnalysis.getFlowBefore(unit).contains(usedLocal)){
-//                            System.out.println("    Line " + unit.getJavaSourceStartLineNumber() +": MUST NullPointer usage of local " + usedLocal + " in unit (" + c +") " + unit);
-//                        }
-                    }
-                    if(unit instanceof InvokeStmt && usedValueBox.getValue().getType().equals(NullType.v())){
-                        System.out.println("    Line " + unit.getJavaSourceStartLineNumber() +": MUST NullPointer usage in unit (" + c +") " + unit);
+        String methodLabel = "B";
+        NullPointerAnalysis.AnalysisMode analysisMode = NullPointerAnalysis.AnalysisMode.MAY;
+        if (args.length >= 1) {
+            if (!"ABC".contains(args[0])) {
+                System.out.println(parameterMessage);
+                return;
+            }
+            methodLabel = args[0];
+        }
+        if (args.length >= 2) {
+            switch (args[1]) {
+                case "MAY":
+                    analysisMode = NullPointerAnalysis.AnalysisMode.MAY;
+                    break;
+                case "MUST":
+                    analysisMode = NullPointerAnalysis.AnalysisMode.MUST;
+                    break;
+                case "MAY_P":
+                    analysisMode = NullPointerAnalysis.AnalysisMode.MAY_P;
+                    break;
+                default:
+                    System.out.println(parameterMessage);
+                    return;
+            }
+        }
+        boolean visualize = (args.length >= 3 && args[2].equals("viz"));
+        SootMethod sm = Scene.v().grabMethod(String.format("<NullPointerExample: void method%s()>", methodLabel));
+        JimpleBody body = (JimpleBody) sm.retrieveActiveBody();
+        UnitGraph unitGraph = new TrapUnitGraph(body);
+        NullPointerAnalysis npa = new NullPointerAnalysis(unitGraph, analysisMode, body);
+        if (visualize)
+            Visualizer.v().animateIntraGraph(unitGraph, npa);
+        System.out.println("NullPointerException Warnings:");
+        for (Unit unit : body.getUnits()) {
+            for (ValueBox usedValueBox : unit.getUseBoxes()) {
+                if (usedValueBox.getValue() instanceof Local) {
+                    Local usedLocal = (Local) usedValueBox.getValue();
+                    if (npa.getFlowBefore(unit).contains(usedLocal)) {
+                        System.out.println("    Line " + unit.getJavaSourceStartLineNumber() + ": " + npa.analysisMode + " NullPointer usage of local " + usedLocal + " in unit " + unit);
                     }
                 }
             }

@@ -89,7 +89,7 @@ public class BasicAPI {
                                     ? "cg_node, default_color" : "cg_node, cg_lib_class"
                             , sootMethod.getDeclaringClass().isApplicationClass()
                                     ? sootMethod.getSubSignature() : sootMethod.getSignature())
-                );
+                , true);
             Visualizer.v().draw();
         }
     }

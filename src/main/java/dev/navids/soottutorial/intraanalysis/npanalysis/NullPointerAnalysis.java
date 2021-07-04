@@ -6,26 +6,38 @@ import soot.Unit;
 import soot.jimple.*;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
+import soot.toolkits.scalar.Pair;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class NullPointerAnalysis extends ForwardFlowAnalysis<Unit, NullFlowSet> {
 
     enum AnalysisMode {
         MUST,
         MAY_P,
-        MAY_O
+        MAY
     }
-    AnalysisMode analysisMode;
-    public NullPointerAnalysis(DirectedGraph graph, AnalysisMode analysisMode) {
+    public AnalysisMode analysisMode;
+    Map<Integer, Unit> outNFSToUnit = new HashMap<>();
+    public List<Pair<Unit, String>> messages = new ArrayList<>();
+    JimpleBody body;
+    public NullPointerAnalysis(DirectedGraph graph, AnalysisMode analysisMode, JimpleBody body) {
         super(graph);
+        this.body = body;
         this.analysisMode = analysisMode;
         doAnalysis();
     }
 
     @Override
     protected void flowThrough(NullFlowSet inSet, Unit unit, NullFlowSet outSet) {
+        outNFSToUnit.put(outSet.id, unit);
         inSet.copy(outSet);
         kill(inSet, unit, outSet);
         generate(inSet, unit, outSet);
+        messages.add(new Pair<>(unit, outSet.toString()));
     }
 
     @Override
@@ -36,14 +48,35 @@ public class NullPointerAnalysis extends ForwardFlowAnalysis<Unit, NullFlowSet> 
 
     @Override
     protected void merge(NullFlowSet inSet1, NullFlowSet inSet2, NullFlowSet outSet) {
+        Unit possibleSrcUnit = null;
+        if(outNFSToUnit.containsKey(inSet1.id))
+            possibleSrcUnit = outNFSToUnit.get(inSet1.id);
+        else if(outNFSToUnit.containsKey(inSet2.id))
+            possibleSrcUnit = outNFSToUnit.get(inSet2.id);
+        else if(inSet1.parents.size() > 0){
+            for(int i=inSet1.parents.size()-1; i>=0; i--)
+                if(outNFSToUnit.containsKey(inSet1.parents.get(i).id))
+                    possibleSrcUnit = outNFSToUnit.get(inSet1.parents.get(i).id);
+        }
+        else if(inSet2.parents.size() > 0){
+            for(int i=inSet2.parents.size()-1; i>=0; i--)
+                if(outNFSToUnit.containsKey(inSet2.parents.get(i).id))
+                    possibleSrcUnit = outNFSToUnit.get(inSet2.parents.get(i).id);
+        }
+        Unit possibleTgtUnit = null;
+        if(possibleSrcUnit != null && graph.getSuccsOf(possibleSrcUnit).size() == 1)
+            possibleTgtUnit = graph.getSuccsOf(possibleSrcUnit).get(0);
         if(analysisMode != AnalysisMode.MUST)
             inSet1.union(inSet2, outSet);
         else
             inSet1.intersection(inSet2, outSet);
+        messages.add(new Pair<>(possibleTgtUnit, outSet.toString() + " (M)"));
     }
 
     @Override
     protected void copy(NullFlowSet source, NullFlowSet dest) {
+        if(source != dest)
+            dest.parents.add(source);
         source.copy(dest);
     }
 

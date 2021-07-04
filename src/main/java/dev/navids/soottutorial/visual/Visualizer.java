@@ -1,5 +1,6 @@
 package dev.navids.soottutorial.visual;
 
+import dev.navids.soottutorial.intraanalysis.npanalysis.NullPointerAnalysis;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -9,10 +10,9 @@ import org.graphstream.ui.layout.springbox.implementations.LinLog;
 import org.graphstream.ui.spriteManager.SpriteManager;
 import org.graphstream.ui.view.Viewer;
 import soot.*;
-import soot.jimple.internal.JAssignStmt;
-import soot.jimple.internal.JIfStmt;
-import soot.jimple.internal.JInvokeStmt;
-import soot.jimple.internal.JVirtualInvokeExpr;
+import soot.jimple.Expr;
+import soot.jimple.GotoStmt;
+import soot.jimple.internal.*;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.Pair;
@@ -51,6 +51,14 @@ public class Visualizer {
                 "\tpadding: 5px, 5px;\n"+
                 "\ttext-size: 16;\n" +
                 "\ttext-color: white;\n" +
+                "}\n";
+        GCSS += "node.intra_node {\n" +
+                "\tsize-mode: fit;\n"+
+                "\tshape: rounded-box;\n"+
+                "\tstroke-mode: plain;\n"+
+                "\tpadding: 5px, 5px;\n"+
+                "\ttext-size: 16;\n" +
+                "\ttext-color: black;\n" +
                 "}\n";
         GCSS += "node.cfg_branch {\n" +
                 "\tfill-color: blue;\n" +
@@ -95,8 +103,96 @@ public class Visualizer {
                 "\tarrow-size: 16;\n" +
                 "\tshape: cubic-curve;\n" +
                 "}\n";
+        GCSS += "edge.intra_merge {\n" +
+                "\tarrow-size: 24;\n" +
+                "\tshape: angle;\n" +
+                "}\n";
         graph.setAttribute("ui.stylesheet", GCSS);
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
+    }
+
+    public void animateIntraGraph(UnitGraph unitGraph, NullPointerAnalysis npa){
+
+        int index = 0;
+        for (Unit unit : unitGraph) {
+            index += 1;
+            String aid = getID(unit);
+            Node aNode = graph.addNode(aid);
+            String label = getLabelFromUnit(unit);
+            aNode.setAttribute("ui.class", "default_color, intra_node");
+            aNode.setAttribute("ui.label", label);
+        }
+        for (Unit unit : unitGraph) {
+            for (Unit suc : unitGraph.getSuccsOf(unit)) {
+                String aid = getID(unit);
+                String bid = getID(suc);
+                graph.addEdge(aid + bid, aid, bid, true);
+            }
+        }
+        Unit header = unitGraph.getHeads().get(0);
+        String hid = getID(header);
+        Node head = graph.getNode(hid);
+        int x = 200, y = 2000;
+        int c = 1;
+        Random random = new Random();
+        for(Iterator<Node> it = head.getBreadthFirstIterator(true); it.hasNext();){
+            Node node = it.next();
+            node.setAttribute("xyz", x, y, 0);
+            x += 50 + random.nextInt(50)-25;
+            y -= c * 50 + random.nextInt(50);
+            c *= -1;
+        }
+        draw();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Unit previousUnit = null;
+        Edge previousEdge = null;
+        for(Pair<Unit, String> p : npa.messages){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(previousUnit != null) {
+                graph.getNode(getID(previousUnit)).setAttribute("ui.class", "seagreen, intra_node");
+                for(Unit pred: unitGraph.getPredsOf(previousUnit)){
+                    String aid = getID(pred);
+                    String bid = getID(previousUnit);
+                    previousEdge = graph.getEdge(aid + bid);
+                    previousEdge.setAttribute("ui.class", "");
+                }
+            }
+            previousUnit = null;
+            if(previousEdge != null)
+                previousEdge.setAttribute("ui.class", "");
+            previousEdge = null;
+            if(p.getO1() == null)
+                continue;
+            String message = p.getO2();
+            String cls = "indianred, intra_node";
+            Unit unit = p.getO1();
+            if(message.contains("(M)")){
+                message = message.replace(" (M)", " ");
+                cls = "purple, intra_node";
+                for(Unit pred: unitGraph.getPredsOf(unit)){
+                    String aid = getID(pred);
+                    String bid = getID(unit);
+                    previousEdge = graph.getEdge(aid + bid);
+                    previousEdge.setAttribute("ui.class", "intra_merge");
+                }
+            }
+            String aid = getID(unit);
+            if(!hasNode(aid))
+                continue;
+            String label = getLabelFromUnit(unit);
+            Node aNode = graph.getNode(aid);
+            aNode.setAttribute("ui.label", label + " ||| NullSet: {"+message+"}");
+            aNode.setAttribute("ui.class", cls);
+            previousUnit = unit;
+        }
     }
 
     public void addUnitGraph(UnitGraph unitGraph){
@@ -143,41 +239,55 @@ public class Visualizer {
         }
     }
 
-    private String getLabelFromUnit(Unit unit) {
+    private String simplifyExpr(Expr expr){
+        if(expr instanceof AbstractInstanceInvokeExpr)
+            return simplifyInstanceInvokeExpr((AbstractInstanceInvokeExpr) expr);
+        return expr.toString();
+    }
+
+    private String getLabelFromUnit(Unit unit){
+        String lineNumber = unit.getJavaSourceStartLineNumber() != -1 ? Integer.toString(unit.getJavaSourceStartLineNumber()) : "-";
+        return lineNumber + ": " + simplifyUnit(unit);
+    }
+
+    private String simplifyUnit(Unit unit) {
         StringBuilder label;
         label = new StringBuilder(unit.toString());
         if (unit instanceof JAssignStmt){
             JAssignStmt jAssignStmt = (JAssignStmt) unit;
-            if(jAssignStmt.containsInvokeExpr() && jAssignStmt.getInvokeExpr() instanceof JVirtualInvokeExpr){
+            if(jAssignStmt.containsInvokeExpr() && jAssignStmt.getInvokeExpr() instanceof AbstractInstanceInvokeExpr){
                 label = new StringBuilder(jAssignStmt.getLeftOp().toString() + "=");
-                JVirtualInvokeExpr jVirtualInvokeExpr = (JVirtualInvokeExpr) jAssignStmt.getInvokeExpr();
-                label.append(jVirtualInvokeExpr.getBase()).append(".").append(jVirtualInvokeExpr.getMethod().getName());
-                if(jVirtualInvokeExpr.getArgCount() > 0){
-                    label.append("(");
-                    for(Value v : jVirtualInvokeExpr.getArgs()){
-                        label.append(v.toString()).append(",");
-                    }
-                    label = new StringBuilder(label.substring(0, label.length() - 1));
-                    label.append(")");
-                }
+                label.append(simplifyExpr(jAssignStmt.getInvokeExpr()));
             }
         }
         if (unit instanceof JInvokeStmt){
             JInvokeStmt jInvokeStmt = (JInvokeStmt) unit;
-            if(jInvokeStmt.containsInvokeExpr() && jInvokeStmt.getInvokeExpr() instanceof JVirtualInvokeExpr){
-                JVirtualInvokeExpr jVirtualInvokeExpr = (JVirtualInvokeExpr) jInvokeStmt.getInvokeExpr();
-                label = new StringBuilder(jVirtualInvokeExpr.getBase() + "." + jVirtualInvokeExpr.getMethod().getName());
-                if(jVirtualInvokeExpr.getArgCount() > 0){
-                    label.append("(");
-                    for(Value v : jVirtualInvokeExpr.getArgs()){
-                        label.append(v.toString()).append(",");
-                    }
-                    label = new StringBuilder(label.substring(0, label.length() - 1));
-                    label.append(")");
-                }
+            if(jInvokeStmt.containsInvokeExpr() && jInvokeStmt.getInvokeExpr() instanceof AbstractInstanceInvokeExpr){
+                label = new StringBuilder(simplifyExpr((jInvokeStmt.getInvokeExpr())));
             }
         }
+        if (unit instanceof JIfStmt){
+            JIfStmt jIfStmt = (JIfStmt) unit;
+            label = new StringBuilder(String.format("If %s goto %s",jIfStmt.getCondition().toString(), simplifyUnit(jIfStmt.getTarget())));
+        }
+        if(unit instanceof GotoStmt){
+            label = new StringBuilder(String.format("goto %s", simplifyUnit(((GotoStmt) unit).getTarget())));
+        }
         label = new StringBuilder(label.toString().replace("java.lang.", "").replace("java.io.", ""));
+        return label.toString();
+    }
+
+    private String simplifyInstanceInvokeExpr(AbstractInstanceInvokeExpr jVirtualInvokeExpr) {
+        StringBuilder label;
+        label = new StringBuilder(jVirtualInvokeExpr.getBase() + "." + jVirtualInvokeExpr.getMethod().getName());
+        label.append("(");
+        if (jVirtualInvokeExpr.getArgCount() > 0) {
+            for (Value v : jVirtualInvokeExpr.getArgs()) {
+                label.append(v.toString()).append(",");
+            }
+            label = new StringBuilder(label.substring(0, label.length() - 1));
+        }
+        label.append(")");
         return label.toString();
     }
 
@@ -230,8 +340,10 @@ public class Visualizer {
             return nodeClassLabelPair;
         }
     }
-
     public void addCallGraph(CallGraph callGraph, CallGraphFilter cgFilter, NodeAttributeConfig nodeAttributeConfig){
+        addCallGraph(callGraph, cgFilter, nodeAttributeConfig, false);
+    }
+    public void addCallGraph(CallGraph callGraph, CallGraphFilter cgFilter, NodeAttributeConfig nodeAttributeConfig, boolean singleEdge){
         if(nodeAttributeConfig == null)
             nodeAttributeConfig = new DefaultNodeAttributeConfig();
         for (soot.jimple.toolkits.callgraph.Edge edge : callGraph) {
@@ -240,7 +352,8 @@ public class Visualizer {
                     continue;
                 String aid = getID(edge.src());
                 String bid = getID(edge.tgt());
-                if (hasEdge(aid + bid + getID(edge.srcUnit())))
+                String edgeId = aid + bid + (singleEdge ? "" : getID(edge.srcUnit()));
+                if (hasEdge(edgeId))
                     continue;
                 if (!hasNode(aid)) {
                     Node aNode = graph.addNode(aid);
@@ -254,13 +367,12 @@ public class Visualizer {
                     bNode.addAttribute("ui.class", nodeClassLabelPair.getO1());
                     bNode.setAttribute("ui.label", nodeClassLabelPair.getO2());
                 }
-                Edge e = graph.addEdge(aid + bid + getID(edge.srcUnit()), aid, bid, true);
+                Edge e = graph.addEdge(edgeId, aid, bid, true);
                 e.addAttribute("ui.class", "cg");
             } catch (Exception exc) {
                 System.err.println(exc.getMessage());
             }
         }
-
     }
 
     private boolean hasNode(String id){

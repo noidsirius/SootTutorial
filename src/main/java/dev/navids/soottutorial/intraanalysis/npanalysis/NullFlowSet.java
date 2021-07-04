@@ -9,8 +9,17 @@ import java.util.stream.Collectors;
 public class NullFlowSet extends AbstractBoundedFlowSet<Local> {
 
     private Set<Local> nullLocals = new HashSet<>();
+    private static int counter = 0;
+    int id = -1;
+    List<NullFlowSet> parents = new ArrayList<>();
     public NullFlowSet() {
         super();
+        id = counter++;
+    }
+
+    @Override
+    public void clear() {
+        nullLocals.clear();
     }
 
     @Override
@@ -53,6 +62,13 @@ public class NullFlowSet extends AbstractBoundedFlowSet<Local> {
 
     @Override
     public List<Local> toList() {
-        return nullLocals.stream().collect(Collectors.toList());
+        return new ArrayList<>(nullLocals);
+    }
+
+    @Override
+    public String toString() {
+        List<Local> locals = new ArrayList<>(nullLocals);
+        locals.sort(Comparator.comparing(Local::getName));
+        return locals.stream().map(Local::getName).collect(Collectors.joining(","));
     }
 }

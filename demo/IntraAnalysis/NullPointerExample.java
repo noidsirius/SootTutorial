@@ -1,4 +1,5 @@
 public class NullPointerExample {
+    Object rObj = new Object();
 
     public void methodA(){
         Data d = new Data("Something");
@@ -7,38 +8,26 @@ public class NullPointerExample {
         use(d);
     }
 
-    public void methodB(Data param){
-        use(param);
+    public void methodB(){
+        Data mayNullData = getData("mayNullData");
+        if(rObj.hashCode() % 2 == 0) {
+            mayNullData = null;
+        }
+        else{
+            mayNullData.hashCode();
+        }
+        mayNullData.hashCode();
     }
-
 
     public void methodC(){
-        Data mayNullData = null;
-        Data notNull = null;
-        Data mustNull = new Data("Must Be null");
-        use(mayNullData);
-        use(notNull);
-        use(mustNull);
-        Object o = new Object();
-        if(o.hashCode() % 2 == 0) {
-            mayNullData = new Data("I'm not null anymore");
-            notNull = new Data("Me neither");
-            mustNull = null;
+        Data nullData = getData("nullData");
+        Data willBeNullData = getData("willBeNullData");
+        for(int i=0; i<rObj.hashCode()%2; i++){
+            willBeNullData = nullData;
+            willBeNullData.hashCode();
+            nullData = null;
         }
-        else {
-            notNull = new Data("Not even in this branch");
-            mustNull = null;
-        }
-        use(mayNullData);
-        use(notNull);
-        use(mustNull);
-    }
-
-    public void methodD(){
-        Data nullData = getNullString();
-        use(nullData);
-        Data helloWorldData = getHelloWorld();
-        use(helloWorldData);
+        willBeNullData.hashCode();
     }
 
     public void use(Data d){
@@ -51,6 +40,10 @@ public class NullPointerExample {
 
     public Data getHelloWorld(){
         return new Data("HelloWorld");
+    }
+
+    public Data getData(String s){
+        return new Data(s);
     }
 
     class Data {

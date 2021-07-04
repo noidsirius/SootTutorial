@@ -54,6 +54,7 @@ In this chapter, you learn how to insert code into Android apps (without having 
 * `./gradlew run --args="AndroidClassInjector"`: Create a new class from scratch and inject it to the  [Numix Calculator](demo/Android/calc.apk).
 
 The instrumented APK is located in `demo/Android/Instrumented`. You need to sign it in order to install on an Android device:
+
 ```sh
 cd ./demo/Android
 # on Windows, replace 'sign.sh' by 'sign.ps1'
@@ -90,14 +91,17 @@ This chapter gives you a brief overview o call graphs and PointsTo analysis in A
 
 ### 5: Some *Real* Static Analysis (:construction: WIP)
 
-* `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream"`: Find usages of the method with the given subsignature in all methods of [UsageExample.java](demo/IntraAnalysis/UsageExample.java).
-* `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream"`: Find usages of the method with the given subsignature of the given class signature in all methods of [UsageExample.java](demo/IntraAnalysis/UsageExample.java).
+* `./gradlew run --args="NullPointerAnalysis B"`: Report possible NullPointerExceptions of MethodB in [NullPointerExample.java](demo/IntraAnalysis/NullPointerExample.java)
+* `./gradlew run --args="NullPointerAnalysis C MAY viz"`: Visualize NullPointerAnalysis for  MethodC in [NullPointerExample.java](demo/IntraAnalysis/NullPointerExample.java)
+* `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream'"`: Find usages of the method with the given subsignature in all methods of [UsageExample.java](demo/IntraAnalysis/UsageExample.java).
+* `./gradlew run --args="UsageFinder 'void println(java.lang.String)' 'java.io.PrintStream'"`: Find usages of the method with the given subsignature of the given class signature in all methods of [UsageExample.java](demo/IntraAnalysis/UsageExample.java).
 
 
 |Title |Tutorial | Soot Code        | Example Input  |
 | :---: |:-------------: |:-------------:| :-----:|
-|Find usages of a method| | [UsageFinder.java](src/main/java/dev/navids/soottutorial/intraanalysis/usagefinder/UsageFinder.java) | [UsageExample.java](demo/IntraAnalysis/usagefinder/UsageExample.java) |
 |Null Pointer Analysis ||[NullPointerAnalysis](src/main/java/dev/navids/soottutorial/intraanalysis/npanalysis/) | [NullPointerExample.java](demo/IntraAnalysis/NullPointerExample.java) |
+|Find usages of a method| | [UsageFinder.java](src/main/java/dev/navids/soottutorial/intraanalysis/usagefinder/UsageFinder.java) | [UsageExample.java](demo/IntraAnalysis/usagefinder/UsageExample.java) |
+
 
 ### 6: Interprocedural analysis (:construction: WIP)
 |Title |Tutorial | Soot Code        | Example Input  |
