@@ -14,7 +14,11 @@ If you have some prior knowledge about static program analysis I suggest you lea
 ### [Why another tutorial for Soot?](docs/Other/Motivation.md)
 
 ## Setup
-In short, use Java 8 and run `./gradlew build`. For more information and Docker setup, follow this [link](docs/Setup/).
+### Unix
+In short, use Java 8 and run `./gradlew build`. For more information and Docker setup, follow this [link](docs/Setup/). 
+
+### Windows (call for contribution)
+You can follow the setup steps for Unix system; however, some of the scripts may not work on Windows system. I really appreciate any contribution (preferably in form of a PR) for refining or adding Windows scripts. 
 
 
 ## Chapters
