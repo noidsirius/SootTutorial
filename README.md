@@ -14,12 +14,7 @@ If you have some prior knowledge about static program analysis I suggest you lea
 ### [Why another tutorial for Soot?](docs/Other/Motivation.md)
 
 ## Setup
-### Unix
 In short, use Java 8 and run `./gradlew build`. For more information and Docker setup, follow this [link](docs/Setup/). 
-
-### Windows (call for contribution)
-You can follow the setup steps for Unix system; however, some of the scripts may not work on Windows system. I really appreciate any contribution (preferably in form of a PR) for refining or adding Windows scripts. 
-
 
 ## Chapters
 ### 1: Get your hands dirty
@@ -59,8 +54,9 @@ In this chapter, you learn how to insert code into Android apps (without having 
 * `./gradlew run --args="AndroidClassInjector"`: Create a new class from scratch and inject it to the  [Numix Calculator](demo/Android/calc.apk).
 
 The instrumented APK is located in `demo/Android/Instrumented`. You need to sign it in order to install on an Android device:
-```aidl
+```sh
 cd ./demo/Android
+# on Windows, replace 'sign.sh' by 'sign.ps1'
 ./sign.sh Instrumented/calc.apk key "android"
 adb install -r -t Instrumented/calc.apk
 ```

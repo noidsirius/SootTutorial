@@ -6,6 +6,8 @@
  * User Manual available at https://docs.gradle.org/5.4.1/userguide/tutorial_java_projects.html
  */
 
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'
@@ -65,7 +67,12 @@ test {
 
 task buildDemoClass(type: Exec) {
     workingDir '.'
-    commandLine './buildDemo.sh'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        commandLine 'powershell','-NoProfile','./buildDemo.ps1'
+    }
+    else {
+        commandLine './buildDemo.sh'
+    }
 }
 
 jacocoTestReport {
