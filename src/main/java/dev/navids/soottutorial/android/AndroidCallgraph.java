@@ -27,9 +27,9 @@ public class AndroidCallgraph {
     static String mainActivityClassName = "dev.navids.multicomp1.MainActivity";
 
     public static void main(String[] args){
-
         if(System.getenv().containsKey("ANDROID_HOME"))
             androidJar = System.getenv("ANDROID_HOME")+ File.separator+"platforms";
+
         // Parse arguments
         InfoflowConfiguration.CallgraphAlgorithm cgAlgorithm = InfoflowConfiguration.CallgraphAlgorithm.SPARK;
         if (args.length > 0 && args[0].equals("CHA"))
