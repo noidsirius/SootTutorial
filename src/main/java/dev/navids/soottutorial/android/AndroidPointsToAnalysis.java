@@ -45,6 +45,9 @@ public class AndroidPointsToAnalysis {
     }
 
     public static void main(String[] args){
+        if(System.getenv().containsKey("ANDROID_HOME"))
+            androidJar = System.getenv("ANDROID_HOME")+ File.separator+"platforms";
+
         SetupApplication app = new SetupApplication(AndroidUtil.getFlowDroidConfig(apkPath, androidJar));
         // By constructing call graph, PointsTo analysis implicitly will be executed
         app.constructCallgraph();
